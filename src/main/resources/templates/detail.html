@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head>
+    <meta charset="utf-8">
+    <title>美食详情</title>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+    </style>
+  </head>
+  <body>
+    <!--  导航条 -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-brand">臻品生活家</div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/">首页</a></li>
+            <li><a href="/food/0">美食</a></li>
+            <li><a th:href="${'/activity/'+#authentication.name+'/id'}">活动</a></li>
+            <li><a href="/about">关于</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <th:block th:if="!${#authentication.name.equals('anonymousUser')}">
+              <li><a sec:authentication="name" th:href="${'/mylife/'+#authentication.name}"></a></li>
+              <li><a href="/logout">退出</a></li>
+            </th:block>
+            <th:block th:if="${#authentication.name.equals('anonymousUser')}">
+              <li><a href="/login">登录</a></li>
+              <li><a href="/register">注册</a></li>
+            </th:block>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+    <!-- 详情页-->
+    <div class="container">
+      <h3 th:text="${food.foodName}"></h3>
+      <th:block th:if="!${#authentication.name.equals('anonymousUser')}">
+        <a th:if="${!isExit}" th:href="${'/food/favorite/'+food.foodId+'/'+#authentication.name}">
+          <span class="glyphicon glyphicon-heart-empty" style="margin-right:40px" aria-hidden="true">收藏</span>
+        </a>
+        <a th:if="${isExit}"
+           th:href="${'/food/cancel/favorite/'+collectId+'/'+food.foodId+'/'+#authentication.name}">
+          <span class="glyphicon glyphicon-heart" style="margin-right:40px" aria-hidden="true">收藏</span>
+        </a>
+      </th:block>
+      <a th:if="${#authentication.name.equals('anonymousUser')}" href="/login">
+        <span class="glyphicon glyphicon-heart-empty" style="margin-right:40px" aria-hidden="true">收藏</span>
+      </a>
+      <a th:href="${'/food/good/'+food.foodId+'/'+#authentication.name}">
+        <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" th:text="${food.goodNum+'人'}"></span>
+      </a>
+      <a th:if="${food.username==#authentication.name}" th:href="${'/food/delete/'+food.foodId}">
+        <button style="margin-left: 300px" class="btn btn-danger">删除</button>
+      </a>
+      <hr>
+      <h5 th:text="${food.uploadDate}"></h5>
+      <img th:src="${food.mainImg}">
+      <h5>素材：</h5>
+      <h5 th:text="${food.material}"></h5>
+      <h5>步骤：</h5>
+      <th:block th:each="step:${food.steps}">
+        <h5 th:text="${step.way}"></h5>
+        <img th:src="${step.stepImg}">
+      </th:block>
+      <hr>
+      <footer>
+        <p class="pull-right">
+          <a href="#top">回到顶部</a>
+        </p>
+        <p>&copy; 2019臻品生活家</p>
+      </footer>
+    </div>
+  </body>
+</html>

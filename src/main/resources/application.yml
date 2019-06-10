@@ -1,0 +1,19 @@
+server:
+  port: 80
+spring:
+  data:
+    mongodb:
+      uri: mongodb://119.23.21.137:27017,119.23.21.137:27018/life
+      package: com.smile.life.entity
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  resources:
+    static-locations: classpath:/
+#在控制台显示nosql语句
+logging:
+  level:
+    org.springframework.data.mongodb.core: DEBUG
+
+
+

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head>
+    <meta charset="utf-8">
+    <title>欢迎</title>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <!--  导航条 -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-brand">臻品生活家</div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/">首页</a></li>
+            <li><a href="/food/0">美食</a></li>
+            <li><a th:href="${'/activity/'+#authentication.name+'/id'}">活动</a></li>
+            <li><a href="/about">关于</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <th:block th:if="!${#authentication.name.equals('anonymousUser')}">
+              <li><a sec:authentication="name" th:href="${'/mylife/'+#authentication.name}"></a></li>
+              <li><a href="/logout">退出</a></li>
+            </th:block>
+            <th:block th:if="${#authentication.name.equals('anonymousUser')}">
+              <li><a href="/login">登录</a></li>
+              <li><a href="/register">注册</a></li>
+            </th:block>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+    <!-- 导航条-->
+
+    <!-- 轮播图-->
+    <div id="ad-carousel" class="carousel slide" data-ride="carousel">
+      <ol class="carousel-indicators">
+        <li data-target="#ad-carousel" data-slide-to="0" class="active"></li>
+        <li data-target="#ad-carousel" data-slide-to="1"></li>
+        <li data-target="#ad-carousel" data-slide-to="2"></li>
+        <li data-target="#ad-carousel" data-slide-to="3"></li>
+        <li data-target="#ad-carousel" data-slide-to="4"></li>
+      </ol>
+
+      <div class="carousel-inner">
+        <div class="item active">
+          <img src="/static/image/lunbo/lunbo1.jpg" alt="1 slide">
+        </div>
+        <div class="item">
+          <img src="/static/image/lunbo/lunbo2.jpg" alt="2 slide">
+        </div>
+        <div class="item">
+          <img src="/static/image/lunbo/lunbo3.jpg" alt="3 slide">
+        </div>
+        <div class="item">
+          <img src="/static/image/lunbo/lunbo4.jpg" alt="4 slide">
+        </div>
+        <div class="item">
+          <img src="/static/image/lunbo/lunbo5.jpg" alt="5 slide">
+        </div>
+      </div>
+      <a class="left carousel-control" href="#ad-carousel" data-slide="prev"><span
+              class="glyphicon glyphicon-chevron-left"></span></a> <a
+            class="right carousel-control" href="#ad-carousel" data-slide="next"><span
+            class="glyphicon glyphicon-chevron-right"></span></a>
+    </div>
+
+    <!-- 主要内容 -->
+    <div class="container summary">
+      <!-- 简介 -->
+      <div class="row" id="summary-container">
+        <div class="col-md-4">
+          <a href="/food/0"><img class="img-circle" src="/static/image/icons/meishi.png"></a>
+
+          <h2>美食</h2>
+          <p>体验极致烹饪</p>
+        </div>
+        <div class="col-md-4">
+          <a th:href="${'/activity/'+#authentication.name+'/id'}">
+            <img class="img-circle" src="/static/image/icons/huodong.png"></a>
+
+          <h2>活动</h2>
+          <p>我们号召城中所有美食达人，辣妈主妇，烘焙大师，城市OL等民间高手，爱好生活、美食的伙伴们相聚于此。</p>
+
+        </div>
+        <div class="col-md-4">
+          <a th:href="${#authentication.name.equals('anonymousUser')}?'/login':${'/mylife/'+#authentication.name}"><img
+                  class="img-circle" src="/static/image/icons/wode.png"></a>
+          <h2>我的</h2>
+          <p>更多个人信息查询管理</p>
+        </div>
+      </div>
+      <hr>
+      <footer>
+        <p class="pull-right">
+          <a href="#top">回到顶部</a>
+        </p>
+        <p>&copy; 2019臻品生活家</p>
+      </footer>
+    </div>
+  </body>
+</html>

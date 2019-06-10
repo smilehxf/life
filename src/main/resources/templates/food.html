@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head>
+    <meta charset="utf-8">
+    <title>美食</title>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      .food {
+        margin: 5px 0 25px 0;
+        border: solid #dddddd 1px;
+        padding: 5px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <!--  导航条 -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-brand">臻品生活家</div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/">首页</a></li>
+            <li class="active"><a href="/food/0">美食</a></li>
+            <li><a th:href="${'/activity/'+#authentication.name+'/id'}">活动</a></li>
+            <li><a href="/about">关于</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <th:block th:if="!${#authentication.name.equals('anonymousUser')}">
+              <li><a sec:authentication="name" th:href="${'/mylife/'+#authentication.name}"></a></li>
+              <li><a href="/logout">退出</a></li>
+            </th:block>
+            <th:block th:if="${#authentication.name.equals('anonymousUser')}">
+              <li><a href="/login">登录</a></li>
+              <li><a href="/register">注册</a></li>
+            </th:block>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+    <!-- 导航条-->
+
+    <!-- 美食列表-->
+    <div class="container">
+      <div class="row" id="foods">
+        <th:block th:each="food : ${foods}">
+          <div class="col-md-3">
+            <div class="food" style="height: 330px">
+              <a th:href="${'/detail/'+food.foodId+'/'+#authentication.name}"
+                 target="_blank">
+                <img class="img-thumbnail" th:src="${food.mainImg}" style="height: 190px;width: 250px">
+              </a>
+              <div class="ng-text">
+                <h3>
+                  <a th:href="${'/detail/'+food.foodId+'/'+#authentication.name}"
+                     target="_blank"
+                     th:text="${food.foodName}">
+                  </a><br>
+                  <small th:text="${food.uploadDate}"></small>
+                </h3>
+                <p th:text="${food.material}"></p>
+              </div>
+            </div>
+          </div>
+        </th:block>
+      </div>
+
+      <!-- 分页 -->
+      <nav style="text-align: center">
+        <ul class="pagination">
+          <input type="hidden" th:value="${page}" id="pageId">
+          <li><a href="/food/0">&laquo;</a></li>
+          <th:block th:each="i:${#numbers.sequence(0,total)}">
+            <li th:id="${'page'+i}"><a th:href="${'/food/'+i}" th:text="${i+1}"></a></li>
+          </th:block>
+          <li><a th:href="${'/food/'+total}">&raquo;</a></li>
+          <script>
+            $('#page' + $('#pageId').val()).addClass('active');
+          </script>
+        </ul>
+        <br>
+      </nav>
+      <hr>
+      <footer>
+        <p class="pull-right">
+          <a href="#top">回到顶部</a>
+        </p>
+        <p>&copy; 2019臻品生活家</p>
+      </footer>
+    </div>
+  </body>
+</html>
+    
