@@ -64,7 +64,7 @@
         <div class="form-group col-sm-3">
           <!--指定 date标记-->
           <div class='input-group date' id='datetimepicker1'>
-            <input type='text' class="form-control" id="uploadDate"/>
+            <input type='text' class="form-control" id="uploadDate" placeholder="按日期搜索"/>
             <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
@@ -112,6 +112,10 @@
           <script>
             $(function () {
               $('#page' + $('#pageId').val()).addClass('active');
+              $('#uploadDate').datetimepicker({
+                format: 'YYYY-MM-DD',
+                locale: moment.locale('zh-cn')
+              });
               $('#datetimepicker1').datetimepicker({
                 format: 'YYYY-MM-DD',
                 locale: moment.locale('zh-cn')
