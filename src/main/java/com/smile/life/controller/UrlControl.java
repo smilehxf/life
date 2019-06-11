@@ -9,12 +9,16 @@ import com.smile.life.service.CollectFoodService;
 import com.smile.life.service.FoodService;
 import com.smile.life.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,17 +39,45 @@ public class UrlControl {
         return "index";
     }
 
-    @GetMapping("/food/{page}")
-    public String showFood(@PathVariable Integer page, Model model) {
-        long total = foodService.total();
-        if (page == null) page = 0;
-        List<Food> all = foodService.findAll(page, 8);
+    @GetMapping("/food/{key}/{value}/{page}")
+    public String showFood(@PathVariable Integer page, Model model, @PathVariable String key, @PathVariable String value) {
+        long total = 0;
+        List<Food> all = new ArrayList<>();
+        if (key.equals("id") && value.equals("no")) {
+            Page<Food> foods = foodService.findAll(PageRequest.of(page, 8));
+            total = foods.getTotalPages() - 1;
+            all = foods.getContent();
+        }
+        if (key.equals("username")) {
+            Page<Food> foods = foodService.findByUsernameLike(value, PageRequest.of(page, 8));
+            total = foods.getTotalPages() - 1;
+            all = foods.getContent();
+        }
+        if (key.equals("uploadDate")) {
+            LocalDate dateTime = LocalDate.parse(value, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            Page<Food> foods = foodService.findByUploadDate(dateTime, PageRequest.of(page, 8));
+            total = foods.getTotalPages() - 1;
+            all = foods.getContent();
+        }
+        if (key.equals("foodName")) {
+            Page<Food> foods = foodService.findByFoodNameLike(value, PageRequest.of(page, 8));
+            total = foods.getTotalPages() - 1;
+            all = foods.getContent();
+        }
+        if (total < 0) total = 0;
         System.out.println(all);
-        model.addAttribute("total", total / 8);
+        model.addAttribute("total", total);
         model.addAttribute("page", page);
         model.addAttribute("foods", all);
+        model.addAttribute("key", key);
+        model.addAttribute("value", value);
+        System.out.println(key);
+        System.out.println(page);
+        System.out.println(value);
+
         return "food";
     }
+
 
     @GetMapping("/detail/{id}/{username}")
     public String detail(@PathVariable String id, Model model, @PathVariable String username) {

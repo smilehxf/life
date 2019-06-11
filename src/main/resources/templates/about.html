@@ -23,7 +23,7 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li><a href="/">首页</a></li>
-            <li><a href="/food/0">美食</a></li>
+            <li><a href="/food/id/no/0">美食</a></li>
             <li><a th:href="${'/activity/'+#authentication.name+'/id'}">活动</a></li>
             <li class="active"><a href="/about">关于</a></li>
           </ul>
@@ -40,19 +40,29 @@
         </div><!--/.nav-collapse -->
       </div>
     </nav>
-    <!--内容-->
-    <div class="container" style="border:solid #dddddd 1px;margin-top:5px;border-radius:5px">
-      <img width="100%" class="img-rounded" style="margin-top: 10px" src="/static/image/about.JPG">
-      <h3>Spring Boot + Spring Security + Spring data JPA + MongoDB + Thymeleaf</h3>
-      <h3>2016329621062@ZSTU</h3>
-      <h3>Made By Smile</h3>
-      <hr>
-      <footer>
-        <p class="pull-right">
-          <a href="#top">回到顶部</a>
-        </p>
-        <p>&copy; 2019臻品生活家</p>
-      </footer>
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <!--内容-->
+            <h3>臻品生活家，让生活更美好！</h3>
+            <img width="100%" class="img-rounded" style="margin-top: 10px;margin-bottom: 10px" src="/static/image/about.JPG">
+            <h4>Spring Boot+Spring Security+Spring data JPA+MongoDB+Thymeleaf</h4>
+            <h4>2016329621062@ZSTU</h4>
+            <h4>Made By Smile</h4>
+            <hr>
+            <footer>
+              <p>&copy; 2019臻品生活家</p>
+            </footer>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal -->
     </div>
+    <script>
+      $('#myModal').modal();
+    </script>
+
+
   </body>
 </html>
