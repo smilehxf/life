@@ -27,12 +27,14 @@ public class UserController {
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/{username}")
+
     public Boolean find(@PathVariable String username) {
         User user = userService.findOne(username);
         return user != null;
     }
 
     @PostMapping("/register")
+
     public String add(String username, String password) {
         User user = new User(username, bCryptPasswordEncoder.encode(password));
         user.setRole("ROLE_USER");
@@ -41,6 +43,7 @@ public class UserController {
     }
 
     @GetMapping("/login/error")
+
     public String loginError(HttpServletRequest request) {
         AuthenticationException exception =
                 (AuthenticationException) request.getSession().getAttribute("SPRING_SECURITY_LAST_EXCEPTION");
@@ -55,6 +58,7 @@ public class UserController {
     }
 
     @GetMapping("/update")
+
     public String update(String username, String password, String newPassword) {
         User user = userService.findOne(username);
         if (user == null) {
@@ -65,6 +69,14 @@ public class UserController {
         user.setPassword(bCryptPasswordEncoder.encode(newPassword));
         userService.save(user);
         return "修改成功！";
+    }
+
+    @GetMapping("/isTrue")
+    public Boolean isTrue(String username, String password) {
+        System.out.println(username);
+        System.out.println(password);
+        User user = userService.findOne(username);
+        return bCryptPasswordEncoder.matches(password, user.getPassword());
     }
 
 }
